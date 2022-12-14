@@ -262,3 +262,146 @@ macro_rules! ImplementWriteBitwise {
 
 ImplementWriteBitwise!(u8);
 ImplementWriteBitwise!(u32);
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_set() {
+        assert_eq!(0b0000_0000u8.set_bit(0), 0b0000_0001u8);
+        assert_eq!(0b0000_0000u8.set_bit(1), 0b0000_0010u8);
+        assert_eq!(0b0000_0000u8.set_bit(2), 0b0000_0100u8);
+        assert_eq!(0b0000_0000u8.set_bit(3), 0b0000_1000u8);
+        assert_eq!(0b0000_0000u8.set_bit(4), 0b0001_0000u8);
+        assert_eq!(0b0000_0000u8.set_bit(5), 0b0010_0000u8);
+        assert_eq!(0b0000_0000u8.set_bit(6), 0b0100_0000u8);
+        assert_eq!(0b0000_0000u8.set_bit(7), 0b1000_0000u8);
+    }
+
+    #[test]
+    fn test_set_noisy() {
+        assert_eq!(0b1010_0110u8.set_bit(0), 0b1010_0111u8);
+        assert_eq!(0b1010_0110u8.set_bit(1), 0b1010_0110u8);
+        assert_eq!(0b1010_0110u8.set_bit(2), 0b1010_0110u8);
+        assert_eq!(0b1010_0110u8.set_bit(3), 0b1010_1110u8);
+        assert_eq!(0b1010_0110u8.set_bit(4), 0b1011_0110u8);
+        assert_eq!(0b1010_0110u8.set_bit(5), 0b1010_0110u8);
+        assert_eq!(0b1010_0110u8.set_bit(6), 0b1110_0110u8);
+        assert_eq!(0b1010_0110u8.set_bit(7), 0b1010_0110u8);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_set_panics() {
+        0b0000_0000u8.set_bit(8);
+    }
+
+    #[test]
+    fn test_clear() {
+        assert_eq!(0b1111_1111u8.clear_bit(0), 0b1111_1110u8);
+        assert_eq!(0b1111_1111u8.clear_bit(1), 0b1111_1101u8);
+        assert_eq!(0b1111_1111u8.clear_bit(2), 0b1111_1011u8);
+        assert_eq!(0b1111_1111u8.clear_bit(3), 0b1111_0111u8);
+        assert_eq!(0b1111_1111u8.clear_bit(4), 0b1110_1111u8);
+        assert_eq!(0b1111_1111u8.clear_bit(5), 0b1101_1111u8);
+        assert_eq!(0b1111_1111u8.clear_bit(6), 0b1011_1111u8);
+        assert_eq!(0b1111_1111u8.clear_bit(7), 0b0111_1111u8);
+    }
+
+    #[test]
+    fn test_clear_noisy() {
+        assert_eq!(0b1010_0110u8.clear_bit(0), 0b1010_0110u8);
+        assert_eq!(0b1010_0110u8.clear_bit(1), 0b1010_0100u8);
+        assert_eq!(0b1010_0110u8.clear_bit(2), 0b1010_0010u8);
+        assert_eq!(0b1010_0110u8.clear_bit(3), 0b1010_0110u8);
+        assert_eq!(0b1010_0110u8.clear_bit(4), 0b1010_0110u8);
+        assert_eq!(0b1010_0110u8.clear_bit(5), 0b1000_0110u8);
+        assert_eq!(0b1010_0110u8.clear_bit(6), 0b1010_0110u8);
+        assert_eq!(0b1010_0110u8.clear_bit(7), 0b0010_0110u8);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_clear_panics() {
+        0b1111_1111u8.clear_bit(8);
+    }
+
+    #[test]
+    fn test_read() {
+        assert!(0b1010_0110u8.read_bit(0).not());
+        assert!(0b1010_0110u8.read_bit(1));
+        assert!(0b1010_0110u8.read_bit(2));
+        assert!(0b1010_0110u8.read_bit(3).not());
+        assert!(0b1010_0110u8.read_bit(4).not());
+        assert!(0b1010_0110u8.read_bit(5));
+        assert!(0b1010_0110u8.read_bit(6).not());
+        assert!(0b1010_0110u8.read_bit(7));
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_read_panics() {
+        0b1010_0110u8.read_bit(8);
+    }
+
+    #[test]
+    fn test_read_bits() {
+        assert_eq!(0b1010_0110u8.read_bits(0..=0), 0b0000_0000u8);
+        assert_eq!(0b1010_0110u8.read_bits(0..=1), 0b0000_0010u8);
+        assert_eq!(0b1010_0110u8.read_bits(0..=2), 0b0000_0110u8);
+        assert_eq!(0b1010_0110u8.read_bits(0..=3), 0b0000_0110u8);
+        assert_eq!(0b1010_0110u8.read_bits(0..=4), 0b0000_0110u8);
+        assert_eq!(0b1010_0110u8.read_bits(0..=5), 0b0010_0110u8);
+        assert_eq!(0b1010_0110u8.read_bits(0..=6), 0b0010_0110u8);
+        assert_eq!(0b1010_0110u8.read_bits(0..=7), 0b1010_0110u8);
+        assert_eq!(0b1010_0110u8.read_bits(1..=1), 0b0000_0001u8);
+        assert_eq!(0b1010_0110u8.read_bits(1..=2), 0b0000_0011u8);
+        assert_eq!(0b1010_0110u8.read_bits(1..=3), 0b0000_0011u8);
+        assert_eq!(0b1010_0110u8.read_bits(1..=4), 0b0000_0011u8);
+        assert_eq!(0b1010_0110u8.read_bits(1..=5), 0b0001_0011u8);
+        assert_eq!(0b1010_0110u8.read_bits(1..=6), 0b0001_0011u8);
+        assert_eq!(0b1010_0110u8.read_bits(1..=7), 0b0101_0011u8);
+        assert_eq!(0b1010_0110u8.read_bits(2..=2), 0b0000_0001u8);
+        assert_eq!(0b1010_0110u8.read_bits(2..=3), 0b0000_0001u8);
+        assert_eq!(0b1010_0110u8.read_bits(2..=4), 0b0000_0001u8);
+        assert_eq!(0b1010_0110u8.read_bits(2..=5), 0b0000_1001u8);
+        assert_eq!(0b1010_0110u8.read_bits(2..=6), 0b0000_1001u8);
+        assert_eq!(0b1010_0110u8.read_bits(2..=7), 0b0010_1001u8);
+        assert_eq!(0b1010_0110u8.read_bits(3..=3), 0b0000_0000u8);
+        assert_eq!(0b1010_0110u8.read_bits(3..=4), 0b0000_0000u8);
+        assert_eq!(0b1010_0110u8.read_bits(3..=5), 0b0000_0100u8);
+        assert_eq!(0b1010_0110u8.read_bits(3..=6), 0b0000_0100u8);
+        assert_eq!(0b1010_0110u8.read_bits(3..=7), 0b0001_0100u8);
+        assert_eq!(0b1010_0110u8.read_bits(4..=4), 0b0000_0000u8);
+        assert_eq!(0b1010_0110u8.read_bits(4..=5), 0b0000_0010u8);
+        assert_eq!(0b1010_0110u8.read_bits(4..=6), 0b0000_0010u8);
+        assert_eq!(0b1010_0110u8.read_bits(4..=7), 0b0000_1010u8);
+        assert_eq!(0b1010_0110u8.read_bits(5..=5), 0b0000_0001u8);
+        assert_eq!(0b1010_0110u8.read_bits(5..=6), 0b0000_0001u8);
+        assert_eq!(0b1010_0110u8.read_bits(5..=7), 0b0000_0101u8);
+        assert_eq!(0b1010_0110u8.read_bits(6..=6), 0b0000_0000u8);
+        assert_eq!(0b1010_0110u8.read_bits(6..=7), 0b0000_0010u8);
+        assert_eq!(0b1010_0110u8.read_bits(7..=7), 0b0000_0001u8);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_read_bits_panics_1() {
+        0b1010_0110u8.read_bits(0..=8);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_read_bits_panics_2() {
+        0b1010_0110u8.read_bits(8..=8);
+    }
+
+    // TODO
+    /*
+    #[test]
+    fn test_write_bits() {
+        assert_eq!(0b0000_0000u8.write_bits(0, 0b0000_0000u8, 0), 0b0000_0000u8);
+    }
+    */
+}
