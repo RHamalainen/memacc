@@ -1,5 +1,6 @@
 //! Bit manipulation.
 
+use core::assert;
 use core::ops::BitAnd;
 use core::ops::BitOr;
 use core::ops::Not;
