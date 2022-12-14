@@ -11,7 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Build
+    - name: Build with standard library
       run: cargo build --verbose
-    - name: Run tests
+    - name: Run tests with standard library
       run: cargo test --verbose
+    - name: Build without standard library
+      run: cargo build --verbose --features no-std
+    - name: Run tests without standard library
+      run: cargo test --verbose --features no-std
