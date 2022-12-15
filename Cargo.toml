@@ -1,6 +1,6 @@
 [package]
 name = "memacc"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Roni Hämäläinen <roni.hamalainen@tuni.fi>"]
 edition = "2021"
 description = "Memory access functions."
