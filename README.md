@@ -13,3 +13,13 @@ Use with standard library.
 Use without standard library.
 
 `memacc = { version = "*", features = ["no-std"] }`
+
+## How to use
+
+TODO
+
+![Overview.](/doc/dia/Diagram2.svg)
+
+## TODO
+
+- maybe add scatter read & write?
