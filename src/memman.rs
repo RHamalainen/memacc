@@ -10,6 +10,7 @@ use core::ptr::read_volatile;
 use core::ptr::write_volatile;
 
 /// Read value from memory address.
+#[allow(clippy::not_unsafe_ptr_arg_deref)]
 #[inline]
 #[must_use]
 pub fn read_from_address(address: *mut u32) -> u32 {
@@ -19,6 +20,7 @@ pub fn read_from_address(address: *mut u32) -> u32 {
 }
 
 /// Write value to memory address.
+#[allow(clippy::not_unsafe_ptr_arg_deref)]
 #[inline]
 pub fn write_to_address(address: *mut u32, value: u32) {
     // SAFETY:
