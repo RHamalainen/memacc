@@ -1,10 +1,10 @@
 //! Memory manipulation.
 
-use super::bitman::ClearBitwise;
-use super::bitman::ReadBitwise;
-use super::bitman::ReadBitwiseRange;
-use super::bitman::SetBitwise;
-use super::bitman::WriteBitwise;
+use crate::bitman::ClearBitwise;
+use crate::bitman::ReadBitwise;
+use crate::bitman::ReadBitwiseRange;
+use crate::bitman::SetBitwise;
+use crate::bitman::WriteBitwise;
 use core::ops::RangeInclusive;
 use core::ptr::read_volatile;
 use core::ptr::write_volatile;
