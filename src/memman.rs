@@ -64,6 +64,7 @@ pub fn read_address_bits(address: *mut u32, indices: RangeInclusive<u32>) -> u32
 #[inline]
 pub fn write_address_bits(address: *mut u32, indices: RangeInclusive<u32>, value: u32) {
     let start = *indices.start();
+    #[allow(clippy::arithmetic_side_effects)]
     let length = indices.end() - indices.start();
     let old = read_from_address(address);
     let new = old.write_bits(start, value, length);
