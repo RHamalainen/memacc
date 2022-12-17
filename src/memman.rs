@@ -1,10 +1,11 @@
 //! Memory manipulation.
 
-use crate::bitman::ClearBitwise;
-use crate::bitman::ReadBitwise;
-use crate::bitman::ReadBitwiseRange;
-use crate::bitman::SetBitwise;
-use crate::bitman::WriteBitwise;
+use crate::bitman::ClearBit;
+use crate::bitman::ReadBit;
+use crate::bitman::ReadBitRange;
+use crate::bitman::SetBit;
+use crate::bitman::WriteBit;
+use crate::bitman::WriteBits;
 use core::ops::RangeInclusive;
 use core::ptr::read_volatile;
 use core::ptr::write_volatile;
