@@ -2,7 +2,7 @@
 
 use crate::bitman::ClearBit;
 use crate::bitman::ReadBit;
-use crate::bitman::ReadBitRange;
+use crate::bitman::ReadBits;
 use crate::bitman::SetBit;
 use crate::bitman::WriteBits;
 use core::ops::RangeInclusive;

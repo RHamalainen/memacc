@@ -111,7 +111,7 @@ ImplementReadBit!(u8);
 ImplementReadBit!(u32);
 
 /// Can read values of multiple bits.
-pub trait ReadBitRange {
+pub trait ReadBits {
     /// My type.
     type Type;
 
@@ -119,10 +119,10 @@ pub trait ReadBitRange {
     fn read_bits(&self, range: RangeInclusive<Self::Type>) -> Self::Type;
 }
 
-/// Implement `ReadBitRange` for given type.
-macro_rules! ImplementReadBitRange {
+/// Implement `ReadBits` for given type.
+macro_rules! ImplementReadBits {
     ($type:ty) => {
-        impl ReadBitRange for $type {
+        impl ReadBits for $type {
             type Type = Self;
             #[inline]
             #[must_use]
@@ -155,8 +155,8 @@ macro_rules! ImplementReadBitRange {
     };
 }
 
-ImplementReadBitRange!(u8);
-ImplementReadBitRange!(u32);
+ImplementReadBits!(u8);
+ImplementReadBits!(u32);
 
 #[cfg(test)]
 mod tests {

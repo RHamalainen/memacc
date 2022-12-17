@@ -106,7 +106,7 @@ ImplementWriteBit!(u8);
 ImplementWriteBit!(u32);
 
 /// Can set multiple bits.
-pub trait SetBitRange {
+pub trait SetBits {
     /// My type.
     type Type;
 
@@ -114,10 +114,10 @@ pub trait SetBitRange {
     fn set_bits(&self, range: RangeInclusive<Self::Type>) -> Self::Type;
 }
 
-/// Implement `SetBitRange` for given type.
-macro_rules! ImplementSetBitRange {
+/// Implement `SetBits` for given type.
+macro_rules! ImplementSetBits {
     ($type:ty) => {
-        impl SetBitRange for $type {
+        impl SetBits for $type {
             type Type = Self;
             #[inline]
             #[must_use]
@@ -154,8 +154,56 @@ macro_rules! ImplementSetBitRange {
     };
 }
 
-ImplementSetBitRange!(u8);
-ImplementSetBitRange!(u32);
+ImplementSetBits!(u8);
+ImplementSetBits!(u32);
+
+/// Can clear multiple bits.
+pub trait ClearBits {
+    /// My type.
+    type Type;
+
+    /// Clear multiple bits.
+    fn clear_bits(&self, range: RangeInclusive<Self::Type>) -> Self::Type;
+}
+
+impl ClearBits for u8 {
+    type Type = Self;
+    fn clear_bits(&self, range: RangeInclusive<Self::Type>) -> Self::Type {
+        let bits = Self::BITS as Self;
+        let start = *range.start();
+        let end = *range.end();
+
+        assert!(range.is_empty().not(), "Can not clear empty range of bits.");
+        assert!(
+            end < bits,
+            "Range end {} must be less than type's bitwidth {}.",
+            end,
+            bits,
+        );
+
+        let mask: Self = 0;
+        let mask = mask.not();
+
+        // Clear bits lower than range start.
+        let mask = mask.shr(start);
+        let mask = mask.shl(start);
+
+        // Clear bits higher than range end.
+        let amount = bits - end - 1;
+        let mask = mask.shl(amount);
+        let mask = mask.shr(amount);
+
+        // Inverse mask.
+        let mask = mask.not();
+
+        // Set masked bits.
+        let value = self.bitand(mask);
+        value
+    }
+}
+
+// ! ImplementClearBits!(u8);
+// ! ImplementClearBits!(u32);
 
 /// Can write multiple bits.
 pub trait WriteBits {
@@ -250,6 +298,8 @@ ImplementWriteBits!(u32);
 mod tests {
     use super::*;
 
+    // TODO: tests for clear_bits, set_bits
+
     #[test]
     fn test_set_bit() {
         assert_eq!(0b0000_0000u8.set_bit(0), 0b0000_0001u8);
@@ -308,6 +358,16 @@ mod tests {
     #[should_panic]
     fn test_clear_bit_panics() {
         0b1111_1111u8.clear_bit(8);
+    }
+
+    #[test]
+    fn test_set_bits() {
+        assert_eq!(0b0000_0000u8.set_bits(0..=7), 0b1111_1111u8);
+    }
+
+    #[test]
+    fn test_clear_bits() {
+        assert_eq!(0b1111_1111u8.clear_bits(0..=7), 0b0000_0000u8);
     }
 
     #[test]
