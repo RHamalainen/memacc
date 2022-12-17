@@ -186,35 +186,6 @@ macro_rules! ImplementReadBitsScattered {
 ImplementReadBitsScattered!(u8);
 ImplementReadBitsScattered!(u32);
 
-pub trait WriteBitsScattered {
-    type Type;
-    fn write_bits_scattered(&self, indices: &[Self::Type], value: Self::Type) -> Self::Type;
-}
-
-macro_rules! ImplementWriteBitsScattered {
-    ($type:ty) => {
-        impl WriteBitsScattered for $type {
-            type Type = Self;
-            fn write_bits_scattered(
-                &self,
-                indices: &[Self::Type],
-                value: Self::Type,
-            ) -> Self::Type {
-                let mut result = *self;
-                for (index_source, index_result) in indices.iter().enumerate() {
-                    if value.read_bit(index_source as Self) {
-                        result = result.set_bit(*index_result as Self);
-                    }
-                }
-                result
-            }
-        }
-    };
-}
-
-ImplementWriteBitsScattered!(u8);
-ImplementWriteBitsScattered!(u32);
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -377,14 +348,5 @@ mod tests {
     fn test_read_bits_scattered() {
         // TODO
         assert_eq!(0b1010_0110u8.read_bits_scattered(&[0, 1, 3]), 0b0000_0010);
-    }
-
-    #[test]
-    fn test_write_bits_scattered() {
-        // TODO
-        assert_eq!(
-            0b1010_0110u8.write_bits_scattered(&[0, 1, 3], 0b0000_0111u8),
-            0b1010_1111u8
-        );
     }
 }
