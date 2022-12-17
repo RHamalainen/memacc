@@ -5,6 +5,9 @@ use core::ops::RangeInclusive;
 use core::ops::Shl;
 use core::ops::Shr;
 
+use crate::bitman::ClearBit;
+use crate::bitman::SetBit;
+
 /// Can check if single bit is low.
 pub trait IsBitLow {
     /// My type.
@@ -157,6 +160,60 @@ macro_rules! ImplementReadBits {
 
 ImplementReadBits!(u8);
 ImplementReadBits!(u32);
+
+pub trait ReadBitsScattered {
+    type Type;
+    fn read_bits_scattered(&self, indices: &[Self::Type]) -> Self::Type;
+}
+
+macro_rules! ImplementReadBitsScattered {
+    ($type:ty) => {
+        impl ReadBitsScattered for $type {
+            type Type = Self;
+            fn read_bits_scattered(&self, indices: &[Self::Type]) -> Self::Type {
+                let mut result = 0;
+                for (index_result, index_source) in indices.iter().enumerate() {
+                    if self.read_bit(*index_source as Self) {
+                        result = result.set_bit(index_result as Self);
+                    }
+                }
+                result
+            }
+        }
+    };
+}
+
+ImplementReadBitsScattered!(u8);
+ImplementReadBitsScattered!(u32);
+
+pub trait WriteBitsScattered {
+    type Type;
+    fn write_bits_scattered(&self, indices: &[Self::Type], value: Self::Type) -> Self::Type;
+}
+
+macro_rules! ImplementWriteBitsScattered {
+    ($type:ty) => {
+        impl WriteBitsScattered for $type {
+            type Type = Self;
+            fn write_bits_scattered(
+                &self,
+                indices: &[Self::Type],
+                value: Self::Type,
+            ) -> Self::Type {
+                let mut result = *self;
+                for (index_source, index_result) in indices.iter().enumerate() {
+                    if value.read_bit(index_source as Self) {
+                        result = result.set_bit(*index_result as Self);
+                    }
+                }
+                result
+            }
+        }
+    };
+}
+
+ImplementWriteBitsScattered!(u8);
+ImplementWriteBitsScattered!(u32);
 
 #[cfg(test)]
 mod tests {
@@ -314,5 +371,20 @@ mod tests {
     #[should_panic]
     fn test_read_bits_panics_2() {
         0b1010_0110u8.read_bits(8..=8);
+    }
+
+    #[test]
+    fn test_read_bits_scattered() {
+        // TODO
+        assert_eq!(0b1010_0110u8.read_bits_scattered(&[0, 1, 3]), 0b0000_0010);
+    }
+
+    #[test]
+    fn test_write_bits_scattered() {
+        // TODO
+        assert_eq!(
+            0b1010_0110u8.write_bits_scattered(&[0, 1, 3], 0b0000_0111u8),
+            0b1010_1111u8
+        );
     }
 }
