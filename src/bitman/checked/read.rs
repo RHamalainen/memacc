@@ -1,54 +1,60 @@
 //! ```
-//! # use memacc::bitman::IndexU8;
-//! # use memacc::bitman::I;
-//! # use memacc::bitman::ReadBitSafe;
+//! # use memacc::bitman::checked::index::IndexU8;
+//! # use memacc::bitman::checked::index::I;
+//! # use memacc::bitman::checked::read::ReadBitSafe;
 //! let state = 0b1010_0110u8.read_bit_safe(I::<0>);
 //! assert_eq!(state, false);
 //! ```
 //!
 //! ```
-//! # use memacc::bitman::IndexU8;
-//! # use memacc::bitman::I;
-//! # use memacc::bitman::ReadBitSafe;
+//! # use memacc::bitman::checked::index::IndexU8;
+//! # use memacc::bitman::checked::index::I;
+//! # use memacc::bitman::checked::read::ReadBitSafe;
 //! # use memacc::index;
 //! let state = 0b1010_0110u8.read_bit_safe(index!(0));
 //! assert_eq!(state, false);
 //! ```
 //!
 //! ```
-//! # use memacc::bitman::IndexU8;
-//! # use memacc::bitman::I;
-//! # use memacc::bitman::ReadBitSafe;
+//! # use memacc::bitman::checked::index::IndexU8;
+//! # use memacc::bitman::checked::index::I;
+//! # use memacc::bitman::checked::read::ReadBitSafe;
 //! let state = 0b1010_0110u8.read_bit_safe(I::<1>);
 //! assert_eq!(state, true);
 //! ```
 //!
 //! ```compile_fail
-//! # use memacc::bitman::IndexU8;
-//! # use memacc::bitman::I;
-//! # use memacc::bitman::ReadBitSafe;
+//! # use memacc::bitman::checked::index::IndexU8;
+//! # use memacc::bitman::checked::index::I;
+//! # use memacc::bitman::checked::read::ReadBitSafe;
 //! let state = 0b1010_0110u8.read_bit_safe(I::<8>);
 //! assert_eq!(state, false);
 //! ```
 //!
 //! ```compile_fail
-//! # use memacc::bitman::IndexU8;
-//! # use memacc::bitman::I;
-//! # use memacc::bitman::ReadBitSafe;
+//! # use memacc::bitman::checked::index::IndexU8;
+//! # use memacc::bitman::checked::index::I;
+//! # use memacc::bitman::checked::read::ReadBitSafe;
 //! # use memacc::index;
 //! let state = 0b1010_0110u8.read_bit_safe(index!(8));
 //! assert_eq!(state, false);
 //! ```
 //!
 //! ```
-//! # use memacc::bitman::IndexU8;
-//! # use memacc::bitman::IndexRangeU8;
-//! # use memacc::bitman::I;
-//! # use memacc::bitman::IR;
-//! # use memacc::bitman::ReadBitsSafe;
+//! # use memacc::bitman::checked::index::IndexU8;
+//! # use memacc::bitman::checked::indices::IndexRangeU8;
+//! # use memacc::bitman::checked::index::I;
+//! # use memacc::bitman::checked::indices::IR;
+//! # use memacc::bitman::checked::read::ReadBitsSafe;
 //! let bits = 0b1010_0110u8.read_bits_safe(IR::<0, 4>);
 //! assert_eq!(bits, 0b0000_0110u8);
 //! ```
+
+use crate::bitman::checked::index::IndexU8;
+use crate::bitman::checked::indices::IndexRangeU8;
+use core::ops::BitAnd;
+use core::ops::Shl;
+use core::ops::Shr;
 
 /// Can read single bit value.
 pub trait ReadBitSafe {
