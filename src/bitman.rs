@@ -1,14 +1,14 @@
 //! Bit manipulation.
 
-mod read;
-mod write;
+pub mod checked;
+pub mod unchecked;
 
-pub use read::IsBitHigh;
-pub use read::IsBitLow;
-pub use read::ReadBit;
-pub use read::ReadBitRange;
-pub use write::ClearBit;
-pub use write::SetBit;
-pub use write::SetBitRange;
-pub use write::WriteBit;
-pub use write::WriteBits;
+pub use unchecked::read::IsBitHigh;
+pub use unchecked::read::IsBitLow;
+pub use unchecked::read::ReadBit;
+pub use unchecked::read::ReadBitRange;
+pub use unchecked::write::ClearBit;
+pub use unchecked::write::SetBit;
+pub use unchecked::write::SetBitRange;
+pub use unchecked::write::WriteBit;
+pub use unchecked::write::WriteBits;

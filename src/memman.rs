@@ -4,7 +4,6 @@ use crate::bitman::ClearBit;
 use crate::bitman::ReadBit;
 use crate::bitman::ReadBitRange;
 use crate::bitman::SetBit;
-use crate::bitman::WriteBit;
 use crate::bitman::WriteBits;
 use core::ops::RangeInclusive;
 use core::ptr::read_volatile;
