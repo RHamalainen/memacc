@@ -1,3 +1,5 @@
+//! Tools to read bits safely.
+//!
 //! ```
 //! # use memacc::bitman::checked::index::IndexU8;
 //! # use memacc::bitman::checked::index::I;
