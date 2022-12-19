@@ -1,5 +1,7 @@
 //! Tools to read bits.
 
+// TODO: missing tests
+
 mod tests;
 mod tests_generated;
 
@@ -118,13 +120,65 @@ ImplementReadBit!(u32);
 
 /// Can check if multiple bits are low.
 pub trait AreBitsLow {
-    // TODO
+    /// My type.
+    type Type;
+
+    /// Check if multiple bits are low.
+    fn are_bits_low(&self, range: RangeInclusive<Self::Type>) -> bool;
 }
+
+/// Implement `AreBitsLow` for given type.
+macro_rules! ImplementAreBitsLow {
+    ($type:ty) => {
+        impl AreBitsLow for $type {
+            type Type = Self;
+            #[inline]
+            #[must_use]
+            fn are_bits_low(&self, range: RangeInclusive<Self>) -> bool {
+                for index in range {
+                    if self.is_bit_high(index) {
+                        return false;
+                    }
+                }
+                true
+            }
+        }
+    };
+}
+
+ImplementAreBitsLow!(u8);
+ImplementAreBitsLow!(u32);
 
 /// Can check if multiple bits are high.
 pub trait AreBitsHigh {
-    // TODO
+    /// My type.
+    type Type;
+
+    /// Check if multiple bits are high.
+    fn are_bits_high(&self, range: RangeInclusive<Self::Type>) -> bool;
 }
+
+/// Implement `AreBitsHigh` for given type.
+macro_rules! ImplementAreBitsHigh {
+    ($type:ty) => {
+        impl AreBitsHigh for $type {
+            type Type = Self;
+            #[inline]
+            #[must_use]
+            fn are_bits_high(&self, range: RangeInclusive<Self>) -> bool {
+                for index in range {
+                    if self.is_bit_low(index) {
+                        return false;
+                    }
+                }
+                true
+            }
+        }
+    };
+}
+
+ImplementAreBitsHigh!(u8);
+ImplementAreBitsHigh!(u32);
 
 /// Can read values of multiple bits.
 pub trait ReadBits {
@@ -177,13 +231,65 @@ ImplementReadBits!(u32);
 
 /// Can check if multiple bits are low in non-continuous manner.
 pub trait AreBitsLowScattered {
-    // TODO
+    /// My type.
+    type Type;
+
+    /// Check if multiple bits are low in non-continuous manner.
+    fn are_bits_low_scattered(&self, indices: &[Self::Type]) -> bool;
 }
+
+/// Implement `AreBitsLowScattered` for given type.
+macro_rules! ImplementAreBitsLowScattered {
+    ($type:ty) => {
+        impl AreBitsLowScattered for $type {
+            type Type = Self;
+            #[inline]
+            #[must_use]
+            fn are_bits_low_scattered(&self, indices: &[Self::Type]) -> bool {
+                for index in indices {
+                    if self.is_bit_high(*index) {
+                        return false;
+                    }
+                }
+                true
+            }
+        }
+    };
+}
+
+ImplementAreBitsLowScattered!(u8);
+ImplementAreBitsLowScattered!(u32);
 
 /// Can check if multiple bits are high in non-continuous manner.
 pub trait AreBitsHighScattered {
-    // TODO
+    /// My type.
+    type Type;
+
+    /// Check if multiple bits are high in non-continuous manner.
+    fn are_bits_high_scattered(&self, indices: &[Self::Type]) -> bool;
 }
+
+/// Implement `AreBitsHighScattered` for given type.
+macro_rules! ImplementAreBitsHighScattered {
+    ($type:ty) => {
+        impl AreBitsHighScattered for $type {
+            type Type = Self;
+            #[inline]
+            #[must_use]
+            fn are_bits_high_scattered(&self, indices: &[Self::Type]) -> bool {
+                for index in indices {
+                    if self.is_bit_low(*index) {
+                        return false;
+                    }
+                }
+                true
+            }
+        }
+    };
+}
+
+ImplementAreBitsHighScattered!(u8);
+ImplementAreBitsHighScattered!(u32);
 
 /// Can read values of multiple bits in non-continuous manner.
 pub trait ReadBitsScattered {

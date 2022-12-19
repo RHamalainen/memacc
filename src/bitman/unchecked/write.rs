@@ -310,13 +310,61 @@ ImplementWriteBits!(u32);
 
 /// Can set multiple bits in non-continuous manner.
 pub trait SetBitsScattered {
-    // TODO
+    /// My type.
+    type Type;
+
+    /// Set multiple bits in non-continuous manner.
+    fn set_bits_scattered(&self, indices: &[Self::Type]) -> Self::Type;
 }
+
+/// Implement `SetBitsScattered` for given type.
+macro_rules! ImplementSetBitsScattered {
+    ($type:ty) => {
+        impl SetBitsScattered for $type {
+            type Type = Self;
+            #[inline]
+            fn set_bits_scattered(&self, indices: &[Self::Type]) -> Self::Type {
+                let mut result = *self;
+                for index in indices {
+                    result = result.set_bit(*index);
+                }
+                result
+            }
+        }
+    };
+}
+
+ImplementSetBitsScattered!(u8);
+ImplementSetBitsScattered!(u32);
 
 /// Can clear multiple bits in non-continuous manner.
 pub trait ClearBitsScattered {
-    // TODO
+    /// My type.
+    type Type;
+
+    /// Clear multiple bits in non-continuous manner.
+    fn clear_bits_scattered(&self, indices: &[Self::Type]) -> Self::Type;
 }
+
+/// Implement `ClearBitsScattered` for given type.
+macro_rules! ImplementClearBitsScattered {
+    ($type:ty) => {
+        impl ClearBitsScattered for $type {
+            type Type = Self;
+            #[inline]
+            fn clear_bits_scattered(&self, indices: &[Self::Type]) -> Self::Type {
+                let mut result = *self;
+                for index in indices {
+                    result = result.clear_bit(*index);
+                }
+                result
+            }
+        }
+    };
+}
+
+ImplementClearBitsScattered!(u8);
+ImplementClearBitsScattered!(u32);
 
 /// Can write values of multiple bits in non-continuous manner.
 pub trait WriteBitsScattered {
