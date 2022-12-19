@@ -116,6 +116,16 @@ macro_rules! ImplementReadBit {
 ImplementReadBit!(u8);
 ImplementReadBit!(u32);
 
+/// Can check if multiple bits are low.
+pub trait AreBitsLow {
+    // TODO
+}
+
+/// Can check if multiple bits are high.
+pub trait AreBitsHigh {
+    // TODO
+}
+
 /// Can read values of multiple bits.
 pub trait ReadBits {
     /// My type.
@@ -164,6 +174,16 @@ macro_rules! ImplementReadBits {
 
 ImplementReadBits!(u8);
 ImplementReadBits!(u32);
+
+/// Can check if multiple bits are low in non-continuous manner.
+pub trait AreBitsLowScattered {
+    // TODO
+}
+
+/// Can check if multiple bits are high in non-continuous manner.
+pub trait AreBitsHighScattered {
+    // TODO
+}
 
 /// Can read values of multiple bits in non-continuous manner.
 pub trait ReadBitsScattered {

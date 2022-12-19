@@ -308,6 +308,16 @@ macro_rules! ImplementWriteBits2 {
 ImplementWriteBits!(u8);
 ImplementWriteBits!(u32);
 
+/// Can set multiple bits in non-continuous manner.
+pub trait SetBitsScattered {
+    // TODO
+}
+
+/// Can clear multiple bits in non-continuous manner.
+pub trait ClearBitsScattered {
+    // TODO
+}
+
 /// Can write values of multiple bits in non-continuous manner.
 pub trait WriteBitsScattered {
     /// My type.
