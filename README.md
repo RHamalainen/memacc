@@ -20,20 +20,8 @@ Usage not recommended until interface is frozen.
 
 ## Conceptual framework
 
+This crate is based on the concept of general binary state transition.
+
 This section is work in progress.
 
-|Requirement|Status|
-|---|---|
-|Indexing finite collection with out-of-bounds index must fail on compile time.||
-
-|Type|`IndexU8`|`IndexU32`|
-|---|---|---|
-|`I::<0>`-`I::<7>`|:heavy_check_mark:|:heavy_check_mark:|
-|`I::<8>`-`I::<31>`|:x:|:heavy_check_mark:|
-
 ![Overview.](/doc/dia/Diagram2.svg)
-
-## TODO
-
-- maybe add scatter read & write?
-- maybe give traits in different crate? implementations in different crate
