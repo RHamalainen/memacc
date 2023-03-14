@@ -30,7 +30,8 @@ macro_rules! ImplementIsBitLow {
             #[inline]
             #[must_use]
             fn is_bit_low(&self, index: Self) -> bool {
-                assert!(u32::from(index) < Self::BITS, "Invalid index.");
+                //assert!(u32::from(index) < Self::BITS, "Invalid index.");
+                assert!(u32::try_from(index).unwrap() < Self::BITS, "Invalid index.");
 
                 // Move target bit to index 0.
                 let temporary_1 = self.shr(index);
@@ -47,6 +48,7 @@ macro_rules! ImplementIsBitLow {
 
 ImplementIsBitLow!(u8);
 ImplementIsBitLow!(u32);
+ImplementIsBitLow!(u64);
 
 /// Can check if single bit is high.
 pub trait IsBitHigh {
@@ -65,7 +67,8 @@ macro_rules! ImplementIsBitHigh {
             #[inline]
             #[must_use]
             fn is_bit_high(&self, index: Self) -> bool {
-                assert!(u32::from(index) < Self::BITS, "Invalid index.");
+                //assert!(u32::from(index) < Self::BITS, "Invalid index.");
+                assert!(u32::try_from(index).unwrap() < Self::BITS, "Invalid index.");
 
                 // Move target bit to index 0.
                 let temporary_1 = self.shr(index);
@@ -82,6 +85,7 @@ macro_rules! ImplementIsBitHigh {
 
 ImplementIsBitHigh!(u8);
 ImplementIsBitHigh!(u32);
+ImplementIsBitHigh!(u64);
 
 /// Can read single bit value.
 pub trait ReadBit {
@@ -100,7 +104,8 @@ macro_rules! ImplementReadBit {
             #[inline]
             #[must_use]
             fn read_bit(&self, index: Self) -> bool {
-                assert!(u32::from(index) < Self::BITS, "Invalid index.");
+                //assert!(u32::from(index) < Self::BITS, "Invalid index.");
+                assert!(u32::try_from(index).unwrap() < Self::BITS, "Invalid index.");
 
                 // Move target bit to index 0.
                 let temporary_1 = self.shr(index);
@@ -117,6 +122,7 @@ macro_rules! ImplementReadBit {
 
 ImplementReadBit!(u8);
 ImplementReadBit!(u32);
+ImplementReadBit!(u64);
 
 /// Can check if multiple bits are low.
 pub trait AreBitsLow {
@@ -148,6 +154,7 @@ macro_rules! ImplementAreBitsLow {
 
 ImplementAreBitsLow!(u8);
 ImplementAreBitsLow!(u32);
+ImplementAreBitsLow!(u64);
 
 /// Can check if multiple bits are high.
 pub trait AreBitsHigh {
@@ -179,6 +186,7 @@ macro_rules! ImplementAreBitsHigh {
 
 ImplementAreBitsHigh!(u8);
 ImplementAreBitsHigh!(u32);
+ImplementAreBitsHigh!(u64);
 
 /// Can read values of multiple bits.
 pub trait ReadBits {
@@ -228,6 +236,7 @@ macro_rules! ImplementReadBits {
 
 ImplementReadBits!(u8);
 ImplementReadBits!(u32);
+ImplementReadBits!(u64);
 
 /// Can check if multiple bits are low in non-continuous manner.
 pub trait AreBitsLowScattered {
@@ -259,6 +268,7 @@ macro_rules! ImplementAreBitsLowScattered {
 
 ImplementAreBitsLowScattered!(u8);
 ImplementAreBitsLowScattered!(u32);
+ImplementAreBitsLowScattered!(u64);
 
 /// Can check if multiple bits are high in non-continuous manner.
 pub trait AreBitsHighScattered {
@@ -290,6 +300,7 @@ macro_rules! ImplementAreBitsHighScattered {
 
 ImplementAreBitsHighScattered!(u8);
 ImplementAreBitsHighScattered!(u32);
+ImplementAreBitsHighScattered!(u64);
 
 /// Can read values of multiple bits in non-continuous manner.
 pub trait ReadBitsScattered {
@@ -328,3 +339,4 @@ macro_rules! ImplementReadBitsScattered {
 
 ImplementReadBitsScattered!(u8);
 ImplementReadBitsScattered!(u32);
+ImplementReadBitsScattered!(u64);

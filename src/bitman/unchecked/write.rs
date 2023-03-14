@@ -30,7 +30,8 @@ macro_rules! ImplementSetBit {
             #[inline]
             #[must_use]
             fn set_bit(&self, index: Self) -> Self {
-                assert!(u32::from(index) < Self::BITS, "Invalid index.");
+                //assert!(u32::from(index) < Self::BITS, "Invalid index.");
+                assert!(u32::try_from(index).unwrap() < Self::BITS, "Invalid index.");
 
                 // Move high bit to target index.
                 let mask = Self::from(0b1u8).shl(index);
@@ -44,6 +45,7 @@ macro_rules! ImplementSetBit {
 
 ImplementSetBit!(u8);
 ImplementSetBit!(u32);
+ImplementSetBit!(u64);
 
 /// Can set single bit low.
 pub trait ClearBit {
@@ -62,7 +64,8 @@ macro_rules! ImplementClearBit {
             #[inline]
             #[must_use]
             fn clear_bit(&self, index: Self) -> Self {
-                assert!(u32::from(index) < Self::BITS, "Invalid index.");
+                //assert!(u32::from(index) < Self::BITS, "Invalid index.");
+                assert!(u32::try_from(index).unwrap() < Self::BITS, "Invalid index.");
 
                 // Move low bit to target index.
                 let mask = Self::from(0b1u8).shl(index);
@@ -79,6 +82,7 @@ macro_rules! ImplementClearBit {
 
 ImplementClearBit!(u8);
 ImplementClearBit!(u32);
+ImplementClearBit!(u64);
 
 /// Can write single bit value.
 pub trait WriteBit {
@@ -97,7 +101,8 @@ macro_rules! ImplementWriteBit {
             #[inline]
             #[must_use]
             fn write_bit(&self, index: Self, value: bool) -> Self {
-                assert!(u32::from(index) < Self::BITS, "Invalid index.");
+                //assert!(u32::from(index) < Self::BITS, "Invalid index.");
+                assert!(u32::try_from(index).unwrap() < Self::BITS, "Invalid index.");
                 if value {
                     self.set_bit(index)
                 } else {
@@ -110,6 +115,7 @@ macro_rules! ImplementWriteBit {
 
 ImplementWriteBit!(u8);
 ImplementWriteBit!(u32);
+ImplementWriteBit!(u64);
 
 /// Can set multiple bits.
 pub trait SetBits {
@@ -163,6 +169,7 @@ macro_rules! ImplementSetBits {
 
 ImplementSetBits!(u8);
 ImplementSetBits!(u32);
+ImplementSetBits!(u64);
 
 /// Can clear multiple bits.
 pub trait ClearBits {
@@ -218,6 +225,7 @@ macro_rules! ImplementClearBits {
 
 ImplementClearBits!(u8);
 ImplementClearBits!(u32);
+ImplementClearBits!(u64);
 
 /// Can write multiple bits.
 pub trait WriteBits {
@@ -236,18 +244,24 @@ macro_rules! ImplementWriteBits {
             #[inline]
             #[must_use]
             fn write_bits(&self, start: Self, value: Self, length: Self) -> Self {
-                assert!(u32::from(start) < Self::BITS);
-                assert!(0 < u32::from(length));
-                assert!(u32::from(length) <= Self::BITS);
-                assert!(u32::from(start + length) <= Self::BITS);
+                //assert!(u32::from(start) < Self::BITS);
+                assert!(u32::try_from(start).unwrap() < Self::BITS);
+                //assert!(0 < u32::from(length));
+                assert!(0 < u32::try_from(length).unwrap());
+                //assert!(u32::from(length) <= Self::BITS);
+                assert!(u32::try_from(length).unwrap() <= Self::BITS);
+                //assert!(u32::from(start + length) <= Self::BITS);
+                assert!(u32::try_from(start + length).unwrap() <= Self::BITS);
                 let mut result = *self;
                 let mut written = 0;
                 for index_base in 0..Self::BITS {
-                    if u32::from(start) <= index_base {
+                    //if u32::from(start) <= index_base {
+                    if u32::try_from(start).unwrap() <= index_base {
                         if length <= written {
                             break;
                         }
-                        let index_value = index_base - u32::from(start);
+                        //let index_value = index_base - u32::from(start);
+                        let index_value = index_base - u32::try_from(start).unwrap();
                         let action = if value.read_bit(index_value as Self) {
                             Self::set_bit
                         } else {
@@ -307,6 +321,7 @@ macro_rules! ImplementWriteBits2 {
 
 ImplementWriteBits!(u8);
 ImplementWriteBits!(u32);
+ImplementWriteBits!(u64);
 
 /// Can set multiple bits in non-continuous manner.
 pub trait SetBitsScattered {
@@ -336,6 +351,7 @@ macro_rules! ImplementSetBitsScattered {
 
 ImplementSetBitsScattered!(u8);
 ImplementSetBitsScattered!(u32);
+ImplementSetBitsScattered!(u64);
 
 /// Can clear multiple bits in non-continuous manner.
 pub trait ClearBitsScattered {
@@ -365,6 +381,7 @@ macro_rules! ImplementClearBitsScattered {
 
 ImplementClearBitsScattered!(u8);
 ImplementClearBitsScattered!(u32);
+ImplementClearBitsScattered!(u64);
 
 /// Can write values of multiple bits in non-continuous manner.
 pub trait WriteBitsScattered {
@@ -408,3 +425,4 @@ macro_rules! ImplementWriteBitsScattered {
 
 ImplementWriteBitsScattered!(u8);
 ImplementWriteBitsScattered!(u32);
+ImplementWriteBitsScattered!(u64);
