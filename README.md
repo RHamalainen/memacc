@@ -1,9 +1,7 @@
 <div align="center">
     <h1><code>memacc</code></h1>
 
-    <p>
-        <strong>Memory access and bit manipulation functions.</strong>
-    </p>
+    <p><strong>Memory access and bit manipulation functions.</strong></p>
 
     <p>
         [![paypal](https://img.shields.io/badge/Support_my_work-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=E648MA54L53J6)
