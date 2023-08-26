@@ -1,3 +1,6 @@
 /target
 /Cargo.lock
 .vscode/
+/doc
+/examples
+!/doc/dia/Diagram2.svg
