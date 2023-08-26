@@ -4,3 +4,4 @@
 /doc
 /examples
 !/doc/dia/Diagram2.svg
+/scripts/__pycache__
