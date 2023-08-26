@@ -1,5 +1,13 @@
 //! Memory manipulation.
 
+mod modify_address_value;
+mod read_from_address;
+mod write_to_address;
+
+pub use modify_address_value::ModifyAddressValue;
+pub use read_from_address::ReadFromAddress;
+pub use write_to_address::WriteToAddress;
+
 use crate::bitman::ClearBit;
 use crate::bitman::ReadBit;
 use crate::bitman::ReadBits;
@@ -10,6 +18,7 @@ use core::ptr::read_volatile;
 use core::ptr::write_volatile;
 
 /// Read value from memory address.
+#[deprecated]
 #[allow(clippy::not_unsafe_ptr_arg_deref)]
 #[inline]
 #[must_use]
@@ -20,6 +29,7 @@ pub fn read_from_address(address: *mut u32) -> u32 {
 }
 
 /// Write value to memory address.
+#[deprecated]
 #[allow(clippy::not_unsafe_ptr_arg_deref)]
 #[inline]
 pub fn write_to_address(address: *mut u32, value: u32) {
@@ -29,6 +39,7 @@ pub fn write_to_address(address: *mut u32, value: u32) {
 }
 
 /// Set memory address value's bit high.
+#[deprecated]
 #[inline]
 pub fn set_address_bit(address: *mut u32, index: u32) {
     let old = read_from_address(address);
@@ -37,6 +48,7 @@ pub fn set_address_bit(address: *mut u32, index: u32) {
 }
 
 /// Set memory address value's bit low.
+#[deprecated]
 #[inline]
 pub fn clear_address_bit(address: *mut u32, index: u32) {
     let old = read_from_address(address);
@@ -45,6 +57,7 @@ pub fn clear_address_bit(address: *mut u32, index: u32) {
 }
 
 /// Read memory address value's bit's value.
+#[deprecated]
 #[inline]
 #[must_use]
 pub fn read_address_bit(address: *mut u32, index: u32) -> bool {
@@ -53,6 +66,7 @@ pub fn read_address_bit(address: *mut u32, index: u32) -> bool {
 }
 
 /// Read multiple bits from memory address.
+#[deprecated]
 #[inline]
 #[must_use]
 pub fn read_address_bits(address: *mut u32, indices: RangeInclusive<u32>) -> u32 {
@@ -61,12 +75,16 @@ pub fn read_address_bits(address: *mut u32, indices: RangeInclusive<u32>) -> u32
 }
 
 /// Write multiple bits to memory address.
+#[deprecated]
 #[inline]
 pub fn write_address_bits(address: *mut u32, indices: RangeInclusive<u32>, value: u32) {
-    let start = *indices.start();
+    // TODO
+    unimplemented!()
+
+    /*let start = *indices.start();
     #[allow(clippy::arithmetic_side_effects)]
     let length = indices.end() - indices.start();
     let old = read_from_address(address);
     let new = old.write_bits(start, value, length);
-    write_to_address(address, new);
+    write_to_address(address, new);*/
 }
