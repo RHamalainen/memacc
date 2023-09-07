@@ -3,6 +3,7 @@ use super::WriteToAddress;
 
 pub trait ModifyAddressValue {
     type Type;
+    #[deprecated = "does not work as expected"]
     fn modify_address_value(self, f: fn(Self::Type) -> Self::Type);
 }
 
